@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {Paper} from '@material-ui/core'
 import './index.css';
 
@@ -17,7 +17,7 @@ const Temperature =(props)=> {
         //onClick={() => someMethod(10)}
         style={gridCell}
       >
-        <p class="temperature">
+        <p className="temperature">
         {props.temperature}C
         </p>
       </Paper>

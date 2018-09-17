@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 import {Paper} from '@material-ui/core'
-import './index.css';
 
 const Fan =(props)=> {
   const { classes } = props;
