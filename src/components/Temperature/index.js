@@ -1,11 +1,16 @@
 import React from 'react'
 import {Paper} from '@material-ui/core'
-import './index.css';
+import formatTemperature from '../../utils/temperature.js'
 
-const gridCell = {
+
+const gridCellStyle = {
   height: "100%",
   padding: 2,
   backgroundColor: "#eee"
+};
+
+const temperatureStyle = {
+  fontSize: "2.1em"
 };
 
 
@@ -15,10 +20,10 @@ const Temperature =(props)=> {
     return (
       <Paper className={classes.paper}
         //onClick={() => someMethod(10)}
-        style={gridCell}
+        style={gridCellStyle}
       >
-        <p className="temperature">
-        {props.temperature}C
+        <p style={temperatureStyle}>
+          {formatTemperature(props.temperature)}
         </p>
       </Paper>
     )

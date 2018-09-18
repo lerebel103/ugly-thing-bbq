@@ -16,6 +16,10 @@ const styles = theme => ({
     textAlign: 'center',
     color: theme.palette.text.secondary,
   },
+  button: {
+    margin: "0px",
+    color: theme.palette.text.secondary,
+  },
 });
 
 
@@ -80,13 +84,13 @@ class Home extends Component {
                      />
           </Grid>
           <Grid item xs={12} container spacing={8}>
-          <FormRow classes={this.props.classes} title="Probe #1"
+          <FormRow classes={this.props.classes} title="Probe A"
                    temperature={this.state.probe1.temperature}
                    set_point={this.state.probe1.set_point}
                    />
           </Grid>
           <Grid item xs={12} container spacing={8}>
-          <FormRow classes={this.props.classes} title="Probe #2"
+          <FormRow classes={this.props.classes} title="Probe B"
                    temperature={this.state.probe2.temperature}
                    set_point={this.state.probe2.set_point}
                    />
