@@ -28,15 +28,10 @@ function FormRow(props) {
 
   return (
     <React.Fragment>
-      <Grid item xs={4} >
+      <Grid item xs={12}>
         <SetPoint classes={classes}
                   title={props.title}
                   temperature={props.set_point}/>
-      </Grid>
-      <Grid item xs={4} >
-        <Temperature classes={classes}
-                     title={props.title}
-                     temperature={props.temperature}/>
       </Grid>
     </React.Fragment>
   );
@@ -76,27 +71,27 @@ class Home extends Component {
   render() {
     return (
       <div className={this.props.classes.root}>
-        <Grid container spacing={8}>
-          <Grid item xs={12} container spacing={8}>
+        <Grid container spacing={2}>
+          <Grid item container>
             <FormRow classes={this.props.classes} title="Pit"
                      temperature={this.state.pit.temperature}
                      set_point={this.state.pit.set_point}
                      />
           </Grid>
-          <Grid item xs={12} container spacing={8}>
-          <FormRow classes={this.props.classes} title="Probe A"
+          <Grid item container>
+            <FormRow classes={this.props.classes} title="Probe A"
                    temperature={this.state.probe1.temperature}
                    set_point={this.state.probe1.set_point}
                    />
           </Grid>
-          <Grid item xs={12} container spacing={8}>
-          <FormRow classes={this.props.classes} title="Probe B"
+          <Grid item container>
+            <FormRow classes={this.props.classes} title="Probe B"
                    temperature={this.state.probe2.temperature}
                    set_point={this.state.probe2.set_point}
                    />
           </Grid>
-          <Grid item xs={12} container spacing={8}>
-            <Grid item xs={8}>
+          <Grid item container>
+            <Grid item xs={12} >
               <Fan classes={this.props.classes} rpm={this.state.fan.rpm}
                                      duty_cyle={this.state.fan.duty_cyle}/>
             </Grid>
