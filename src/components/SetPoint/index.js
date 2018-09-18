@@ -19,7 +19,8 @@ const temperatureStyle = {
 
 const setPointButtonStyle = {
   backgroundColor: "gold",
-  padding: 4
+  padding: 4,
+  margin: 1,
 };
 
 const SetPoint =(props)=> {
@@ -30,27 +31,32 @@ const SetPoint =(props)=> {
         //onClick={() => someMethod(10)}
         style={gridCell}
       >
-      <Grid container  style={gridCell} >
+      <Grid container style={gridCell} >
         <Grid container alignItems="center" justify="center">
-          <Grid item xs={8} style={temperatureStyle} >
-            {formatTemperature(props.temperature)}
+          <Grid item xs={4}>
+             <p style={{fontSize: "3em", padding: 0, margin: 0}}>
+               {formatTemperature(243)}
+             </p>
+             <p style={{fontSize: "1.5em", padding: 0, margin: 0}}>
+               {formatTemperature(props.temperature)}
+             </p>
+             <p style={{padding: 0, margin: 5}}>
+               {props.title}
+             </p>
           </Grid>
-          <Grid item xs={16} style={{textAlign: "right"}}>
-            <IconButton className={classes.button} style={setPointButtonStyle} aria-label="Up">
-              <ArrowUpward/>
-            </IconButton>
-          </Grid>
-        </Grid>
-        <Grid container alignItems="center" justify="center">
-           <Grid item xs={8}>
-             {props.title}
-           </Grid>
-             <Grid item xs={16} style={{textAlign: "right"}}>
-               <IconButton className={classes.button} style={setPointButtonStyle} aria-label="Down">
-                 <ArrowDownward/>
-               </IconButton>
+          <Grid container justify="flex-end">
+            <Grid item>
+              <IconButton className={classes.button} style={setPointButtonStyle} aria-label="Up">
+                <ArrowUpward/>
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <IconButton className={classes.button} style={setPointButtonStyle} aria-label="Up">
+                <ArrowDownward/>
+              </IconButton>
             </Grid>
           </Grid>
+         </Grid>
       </Grid>
       </Paper>
     )
