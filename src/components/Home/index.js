@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 import SetPoint from '../../components/SetPoint'
-import Temperature from '../../components/Temperature'
+import RunSection from '../../components/RunSection'
 import Fan from '../../components/Fan'
 
 const styles = theme => ({
@@ -28,7 +28,7 @@ function FormRow(props) {
 
   return (
     <React.Fragment>
-      <Grid item xs={12}>
+      <Grid item xs>
         <SetPoint classes={classes}
                   title={props.title}
                   temperature={props.set_point}/>
@@ -71,7 +71,7 @@ class Home extends Component {
   render() {
     return (
       <div className={this.props.classes.root}>
-        <Grid container spacing={2}>
+        <Grid container xs={12} spacing={2}>
           <Grid item container>
             <FormRow classes={this.props.classes} title="Pit"
                      temperature={this.state.pit.temperature}
@@ -90,11 +90,12 @@ class Home extends Component {
                    set_point={this.state.probe2.set_point}
                    />
           </Grid>
-          <Grid item container>
-            <Grid item xs={12} >
-              <Fan classes={this.props.classes} rpm={this.state.fan.rpm}
+          <Grid item xs>
+            <Fan classes={this.props.classes} rpm={this.state.fan.rpm}
                                      duty_cyle={this.state.fan.duty_cyle}/>
-            </Grid>
+          </Grid>
+          <Grid item xs>
+            <RunSection classes={this.props.classes} />
           </Grid>
         </Grid>
       </div>
