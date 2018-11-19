@@ -21,7 +21,7 @@ const cellStyle = {
 const RunCell =(props)=> {
     const { classes, mode, onToggleMode } = props;
     let buttonText = 'Run';
-    if (mode == 1) {
+    if (mode === 1) {
       buttonText = 'Stop';
     }
 

@@ -9,20 +9,27 @@ import SettingsApplicationsRounded from '@material-ui/icons/SettingsApplications
 import PropTypes from 'prop-types';
 
 const gridCell = {
-    height: "100%",
+    height: '100%',
     padding: 2,
-//  backgroundColor: "#eee"
+//  backgroundColor: '#eee'
+};
+
+const setpointStyle = {
+    fontSize: '1.2em',
+    padding: '5px',
 };
 
 const temperatureStyle = {
-    fontSize: "1.4em",
-    padding: "5px",
+    fontSize: '2em',
+    fontWeight: 'bold',
+    padding: 0,
+    margin: 0
 };
 
 const setPointButtonStyle = {
     backgroundColor: "gold",
     padding: 4,
-    margin: 1,
+    marginLeft: 10,
 };
 
 const settingsButtonStyle = {
@@ -47,10 +54,6 @@ export default class TemperatureCell extends React.Component {
         minTemp: 50,
         maxTemp: 400,
     };
-
-    constructor(props) {
-        super(props);
-    }
 
     /**
      * Handler to increment temperature.
@@ -113,10 +116,10 @@ export default class TemperatureCell extends React.Component {
                         </IconButton>
                     </Grid>
                     <Grid container alignItems="center" justify="center">
-                        <Grid item xs style={{fontSize: "3em", padding: 0, margin: 0}}>
+                        <Grid item xs style={temperatureStyle}>
                             {formatTemperature(temperature)}
                         </Grid>
-                        <Grid container alignItems="center" justify="center" style={temperatureStyle}>
+                        <Grid container alignItems="center" justify="center" style={setpointStyle}>
                             {formatTemperature(setPoint)}
                             <IconButton className={classes.button} style={setPointButtonStyle} aria-label="Down"
                                         onClick={this._tempDecrement}
