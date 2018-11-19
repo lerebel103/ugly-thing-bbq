@@ -3,6 +3,7 @@ import {Paper} from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import SettingsApplicationsRounded from '@material-ui/icons/SettingsApplicationsRounded'
+import PropTypes from 'prop-types';
 
 const gridCell = {
   height: "100%",
@@ -21,14 +22,13 @@ const Fan =(props)=> {
 
     return (
       <Paper className={classes.paper}
-        //onClick={() => someMethod(10)}
         style={gridCell}
       >
-      <Grid container xs={12}>
-       <Grid xs style={{padding: 0, margin: 5}}>
+      <Grid container>
+       <Grid item xs style={{padding: 0, margin: 5}}>
          Fan
        </Grid>
-       <Grid item alignItems="right">
+       <Grid item align="right">
           <IconButton className={classes.button} style={settingsButtonStyle} aria-label="Settings">
             <SettingsApplicationsRounded/>
           </IconButton>
@@ -39,12 +39,18 @@ const Fan =(props)=> {
              {props.rpm} RPM
              <Grid>
              </Grid>
-             {props.duty_cyle}%
+             {props.dutyCycle}%
              </Grid>
           </Grid>
        </Grid>
        </Grid>
       </Paper>
     )
-}
+};
+
+Fan.propTypes = {
+    rpm: PropTypes.number,
+    dutyCycle: PropTypes.number
+};
+
 export default Fan
