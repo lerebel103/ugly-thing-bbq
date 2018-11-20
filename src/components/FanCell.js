@@ -17,40 +17,64 @@ const settingsButtonStyle = {
 
 
 
-const Fan =(props)=> {
-  const { classes } = props;
+export default class Fan extends React.Component {
 
-    return (
-      <Paper className={classes.paper}
-        style={gridCell}
-      >
-      <Grid container>
-       <Grid item xs style={{padding: 0, margin: 5}}>
-         Fan
-       </Grid>
-       <Grid item align="right">
-          <IconButton className={classes.button} style={settingsButtonStyle} aria-label="Settings">
-            <SettingsApplicationsRounded/>
-          </IconButton>
-        </Grid>
-        <Grid container alignItems="center" justify="center" >
-          <Grid item style={{fontSize: "1.4em", padding: 0, margin: 0}}>
-             <Grid>
-             {props.rpm} RPM
-             <Grid>
-             </Grid>
-             {props.dutyCycle}%
-             </Grid>
-          </Grid>
-       </Grid>
-       </Grid>
-      </Paper>
-    )
+    static propTypes = {
+        classes: PropTypes.object,
+        client: PropTypes.object.isRequired,
+    };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            rpm: 0,
+            dutyCycle: 0
+        };
+    }
+
+    componentDidMount() {
+        // Set up subscription
+        const {client} = this.props;
+
+        client.on('message', (topic, message) => {
+            if (topic.endsWith(`fan`)) {
+                const obj = JSON.parse(message.toString());
+                if (obj) {
+                    this.setState({ ...obj });
+                }
+            }
+        });
+    }
+
+    render() {
+        const {classes} = this.props;
+
+        return (
+            <Paper className={classes.paper}
+                   style={gridCell}
+            >
+                <Grid container>
+                    <Grid item xs style={{padding: 0, margin: 5}}>
+                        Fan
+                    </Grid>
+                    <Grid item align="right">
+                        <IconButton className={classes.button} style={settingsButtonStyle} aria-label="Settings">
+                            <SettingsApplicationsRounded/>
+                        </IconButton>
+                    </Grid>
+                    <Grid container alignItems="center" justify="center">
+                        <Grid item style={{fontSize: "1.4em", padding: 0, margin: 0}}>
+                            <Grid>
+                                {this.state.rpm} RPM
+                                <Grid>
+                                </Grid>
+                                {this.state.dutyCycle}%
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Paper>
+        )
+    }
 };
-
-Fan.propTypes = {
-    rpm: PropTypes.number,
-    dutyCycle: PropTypes.number
-};
-
-export default Fan

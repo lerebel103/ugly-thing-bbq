@@ -1,11 +1,12 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
-import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 import TemperatureCell from './TemperatureCell'
 import RunCell from './RunCell'
 import Fan from './FanCell'
+import {MqttClient} from "mqtt";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 
 const styles = theme => ({
     root: {
@@ -37,128 +38,67 @@ FormRow.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
+
 class Home extends Component {
 
-    constructor(props) {
-        super(props);
-
-
-        this.state = {
-            pit: {
-                temperature: null,
-                setPoint: null
-            },
-            probe1: {
-                temperature: null,
-                setPoint: null
-            },
-            probe2: {
-                temperature: null,
-                setPoint: null
-            },
-            fan: {
-                rpm: 0,
-                dutyCycle: 0
-            },
-            mode: 1
-        }
-    }
+    static propTypes = {
+        deviceId: PropTypes.string.isRequired,
+        client: PropTypes.instanceOf(MqttClient).isRequired
+    };
 
     componentDidMount() {
-        // Set up all MQTT subscriptions
-        this._setup_subscriptions();
-
-        // Great, now ask for the latest state
-        // Request state
-        this.props.client.publish(`bbq/${this.props.deviceId}/controller/state/desired`, '{}');
-    }
-
-
-    _setup_subscriptions() {
-        // Blanket subscriptions
+        // Set up all MQTT subscriptions.
+        //
+        // This MQTT client is a bit poor on the subscription side in that it can only subscribe
+        // to topics in the wide sense and does not support assigning specific handlers for specific topics.
+        // It seems we subscribe to a bunch of topics and later use client.on('message', handler), which is not
+        // at all efficient and requires each component to further filter on topics on inbound messages.
+        //
         const {client} = this.props;
         client.subscribe(`bbq/${this.props.deviceId}/#`);
 
-        client.on('message', (topic, message) => {
-            const obj = JSON.parse(message.toString());
-            if (obj) {
-                if (topic.endsWith('pit')) {
-                    this.setState({ pit: {...this.state.pit, temperature: obj.temp} });
-                }
-
-                if (topic.endsWith('probe1')) {
-                    this.setState({ probe1: {...this.state.probe1, temperature: obj.temp} });
-                }
-
-                if (topic.endsWith('probe2')) {
-                    this.setState({ probe2: {...this.state.probe2, temperature: obj.temp} });
-                }
-
-                if (topic.endsWith('fan')) {
-                    this.setState({ fan: {...this.state.fan, ...obj} });
-                }
-
-                if (topic.endsWith('controller/state/reported')) {
-                    this.setState({ pit: {...this.state.pit, setPoint: obj.pit.setPoint} });
-                    this.setState({ probe1: {...this.state.probe1, setPoint: obj.probe1.setPoint} });
-                    this.setState({ probe2: {...this.state.probe2, setPoint: obj.probe2.setPoint} });
-                    this.setState({ mode: obj.mode });
-                }
-            }
-        })
+        // Great, now ask for the latest state
+        // Request state
+        client.publish(`bbq/${this.props.deviceId}/controller/state/desired`, '{}');
     }
 
-    _doNewSetPoint = (key, newTemp) => {
-        const {client} = this.props;
-
-        // Send new temp to desired state topic!
-        let setPoint = {};
-        setPoint[key] = {setPoint: newTemp};
-        client.publish(
-            `bbq/${this.props.deviceId}/controller/state/desired`,
-            JSON.stringify(setPoint));
-    };
-
-    _onToggleMode = (newMode) => {
-        const {client} = this.props;
-
-        // Send new temp to desired state topic!
-        client.publish(
-            `bbq/${this.props.deviceId}/controller/state/desired`,
-            JSON.stringify({mode: newMode}));
-    };
-
     render() {
+        const {client} = this.props;
         return (
             <div className={this.props.classes.root}>
                 <Grid container spacing={0}>
                     <Grid item container>
                         <FormRow classes={this.props.classes} title="Pit"
-                                 {...this.state.pit}
-                                 onNewSetpoint={ temp => this._doNewSetPoint('pit', temp) }
+                                 deviceId={this.props.deviceId}
+                                 tempKey="pit"
+                                 client={client}
                         />
                     </Grid>
                     <Grid item container>
                         <FormRow classes={this.props.classes} title="Probe A"
-                                 {...this.state.probe1}
-                                 onNewSetpoint={ temp => this._doNewSetPoint('probe1', temp) }
+                                 deviceId={this.props.deviceId}
+                                 tempKey="probe1"
+                                 client={client}
                         />
                     </Grid>
                     <Grid item container>
                         <FormRow classes={this.props.classes} title="Probe B"
-                                 {...this.state.probe2}
-                                 onNewSetpoint={ temp => this._doNewSetPoint('probe2', temp) }
+                                 deviceId={this.props.deviceId}
+                                 tempKey="probe2"
+                                 client={client}
                         />
                     </Grid>
                     <Grid item container>
                       <Grid item xs>
-                        <Fan classes={this.props.classes} {...this.state.fan} />
+                        <Fan classes={this.props.classes} client={client}
+                        />
                       </Grid>
                     </Grid>
                     <Grid item container>
                       <Grid item xs>
-                        <RunCell classes={this.props.classes} mode={this.state.mode}
-                                 onToggleMode={this._onToggleMode}/>
+                        <RunCell classes={this.props.classes} client={client}
+                                 deviceId={this.props.deviceId}
+                        />
                       </Grid>
                     </Grid>
                 </Grid>
@@ -166,9 +106,5 @@ class Home extends Component {
         );
     }
 }
-
-Home.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
 
 export default withStyles(styles)(Home);
