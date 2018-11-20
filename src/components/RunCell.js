@@ -1,6 +1,4 @@
 import React from 'react'
-import {Paper} from '@material-ui/core'
-import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import PropTypes from "prop-types";
 
@@ -8,13 +6,10 @@ import PropTypes from "prop-types";
 const paperStyle = {
   height: "100%",
   padding: 2,
-  //backgroundColor: "#eee"
-};
+  textAlign: "right",
+  marginTop: -65,
+  marginRight: 25
 
-const cellStyle = {
-  fontSize: "2.1em",
-  height: "100%",
-  alignItems: "center"
 };
 
 
@@ -71,18 +66,14 @@ export default class RunCell extends React.Component {
         }
 
         return (
-            <Paper className={classes.paper}
-                   style={paperStyle}
-            >
-                <Grid container justify="center" style={cellStyle}>
-                    <Button size="large" variant="extendedFab" color="primary" aria-label="Start_Stop"
+            <div  style={paperStyle} >
+                    <Button variant="fab" color="primary" aria-label="Start_Stop"
                             className={classes.button} onClick={() => {
                         this._onToggleMode(this.state.mode === 1 ? 0 : 1)
                     }}>
                         {buttonText}
                     </Button>
-                </Grid>
-            </Paper>
+            </div>
         )
     };
 }
