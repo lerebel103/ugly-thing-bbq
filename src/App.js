@@ -9,7 +9,10 @@ class App extends Component {
         super(props);
 
         // Todo work out where this comes from
-        this.state = {deviceId: '000000006978ec81'};
+        this.state = {
+            deviceId: '000000006978ec81',
+            connected: false
+        };
 
         this._initMqttClient();
     }
@@ -33,11 +36,11 @@ class App extends Component {
         console.log('Connecting to MQTT broker on ' + mqttUrl)
 
         this._client.on('connect', () => {
-            console.log('MQTT Connected')
-        })
+            this.setState( {...this.state, ...{connected: true}} );
+        });
 
         this._client.on('offline', () => {
-            console.log('DisConnected!!!')
+            this.setState( {...this.state, ...{connected: false}});
         })
 
         this._client.on('close', () => {
@@ -56,7 +59,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <Home client={this._client} deviceId={this.state.deviceId}/>
+                <Home client={this._client} {...this.state} />
             </div>
         );
     }

@@ -7,6 +7,7 @@ import RunCell from './RunCell'
 import Fan from './FanCell'
 import {MqttClient} from "mqtt";
 import withStyles from "@material-ui/core/es/styles/withStyles";
+import Header from "./Header";
 
 const styles = theme => ({
     root: {
@@ -43,7 +44,8 @@ class Home extends Component {
 
     static propTypes = {
         deviceId: PropTypes.string.isRequired,
-        client: PropTypes.instanceOf(MqttClient).isRequired
+        client: PropTypes.instanceOf(MqttClient).isRequired,
+        connected: PropTypes.bool.isRequired
     };
 
     componentDidMount() {
@@ -63,26 +65,28 @@ class Home extends Component {
     }
 
     render() {
-        const {client} = this.props;
+        const {client, classes} = this.props;
         return (
             <div className={this.props.classes.root}>
+
                 <Grid container spacing={0}>
+                    <Header classes={classes} client={client} isConnected={this.props.connected}/>
                     <Grid item container>
-                        <FormRow classes={this.props.classes} title="Pit"
+                        <FormRow classes={classes} title="Pit"
                                  deviceId={this.props.deviceId}
                                  tempKey="pit"
                                  client={client}
                         />
                     </Grid>
                     <Grid item container>
-                        <FormRow classes={this.props.classes} title="Probe A"
+                        <FormRow classes={classes} title="Probe A"
                                  deviceId={this.props.deviceId}
                                  tempKey="probe1"
                                  client={client}
                         />
                     </Grid>
                     <Grid item container>
-                        <FormRow classes={this.props.classes} title="Probe B"
+                        <FormRow classes={classes} title="Probe B"
                                  deviceId={this.props.deviceId}
                                  tempKey="probe2"
                                  client={client}
@@ -90,13 +94,13 @@ class Home extends Component {
                     </Grid>
                     <Grid item container>
                       <Grid item xs>
-                        <Fan classes={this.props.classes} client={client}
+                        <Fan classes={classes} client={client}
                         />
                       </Grid>
                     </Grid>
                     <Grid item container>
                       <Grid item xs>
-                        <RunCell classes={this.props.classes} client={client}
+                        <RunCell classes={classes} client={client}
                                  deviceId={this.props.deviceId}
                         />
                       </Grid>

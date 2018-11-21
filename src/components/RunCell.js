@@ -1,14 +1,15 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
 import PropTypes from "prop-types";
+import {MqttClient} from "mqtt";
 
 
 const paperStyle = {
   height: "100%",
   padding: 2,
   textAlign: "right",
-  marginTop: -65,
-  marginRight: 25
+  marginTop: -70,
+  marginRight: 30
 
 };
 
@@ -17,7 +18,7 @@ export default class RunCell extends React.Component {
 
     static propTypes = {
         classes: PropTypes.object,
-        client: PropTypes.object.isRequired,
+        client: PropTypes.instanceOf(MqttClient).isRequired,
         deviceId: PropTypes.string.isRequired,
     };
 

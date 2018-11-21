@@ -7,7 +7,7 @@ let formatTemperature = function(celcius) {
         return '--'
     } else {
         //return toFarenhieght(celcius) + '\u00b0' + 'F'
-        return `${celcius}\u00b0C`
+        return `${Math.round(celcius)}\u00b0C`
     }
 }
 

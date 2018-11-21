@@ -2,28 +2,22 @@ import React from 'react'
 import {Paper} from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
 import {formatTemperature} from '../utils/temperature.js'
-import IconButton from '@material-ui/core/IconButton';
-import SettingsApplicationsRounded from '@material-ui/icons/SettingsApplicationsRounded'
 import PropTypes from 'prop-types';
 import SetPoint from "./SetPoint";
+import {MqttClient} from "mqtt";
 
 const gridCell = {
     height: '100%',
     padding: 2,
-//  backgroundColor: '#eee'
 };
 
 const temperatureStyle = {
-    fontSize: '2em',
+    fontSize: '2.5em',
     fontWeight: 'bold',
     padding: 0,
     margin: 0
 };
 
-const settingsButtonStyle = {
-    padding: 0,
-    margin: 0,
-};
 
 
 export default class TemperatureCell extends React.Component {
@@ -31,7 +25,7 @@ export default class TemperatureCell extends React.Component {
     static propTypes = {
         classes: PropTypes.object,
         deviceId: PropTypes.string.isRequired,
-        client: PropTypes.object.isRequired,
+        client: PropTypes.instanceOf(MqttClient).isRequired,
         tempKey: PropTypes.string.isRequired,
         title: PropTypes.string,
         setPoint: PropTypes.number,
@@ -69,19 +63,14 @@ export default class TemperatureCell extends React.Component {
                    style={gridCell}>
 
                 <Grid container style={gridCell}>
-                    <Grid item xs style={{padding: 0, margin: 5}}>
-                        {title}
-                    </Grid>
-                    <Grid item align="right">
-                        <IconButton className={classes.button} style={settingsButtonStyle} aria-label="Settings">
-                            <SettingsApplicationsRounded/>
-                        </IconButton>
-                    </Grid>
                     <Grid container alignItems="center" justify="center">
-                        <Grid item xs style={temperatureStyle}>
+                        <div style={temperatureStyle}>
                             {formatTemperature(this.state.temperature)}
+                        </div>
+                        &nbsp;&nbsp; {title}
+                        <Grid container alignItems="center" justify="center">
+                            <SetPoint {...this.props}/>
                         </Grid>
-                        <SetPoint {...this.props}/>
                     </Grid>
                 </Grid>
             </Paper>

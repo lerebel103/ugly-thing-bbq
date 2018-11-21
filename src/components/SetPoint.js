@@ -5,6 +5,7 @@ import IconButton from "@material-ui/core/IconButton/IconButton";
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import PropTypes from "prop-types";
+import {MqttClient} from "mqtt";
 
 const setpointStyle = {
     fontSize: '1.2em',
@@ -13,7 +14,7 @@ const setpointStyle = {
 
 const setPointButtonStyle = {
     backgroundColor: "gold",
-    padding: 4,
+    padding: 6,
     marginLeft: 10,
 };
 
@@ -23,7 +24,7 @@ export default class SetPoint extends Component {
     static propTypes = {
         deviceId: PropTypes.string.isRequired,
         tempKey: PropTypes.string.isRequired,
-        client: PropTypes.object.isRequired,
+        client: PropTypes.instanceOf(MqttClient).isRequired,
         classes: PropTypes.any,
     };
 
@@ -117,7 +118,7 @@ export default class SetPoint extends Component {
     }
 
     render() {
-        return <Grid container alignItems="center" justify="center" style={setpointStyle}>
+        return <div container alignItems="center" justify="center" style={setpointStyle}>
             {formatTemperature(this.state.setPoint)}
             <IconButton className={this.props.classes.button} style={setPointButtonStyle} aria-label="Down"
                         onClick={this._tempDecrement}
@@ -129,7 +130,7 @@ export default class SetPoint extends Component {
             >
                 <ArrowUpward/>
             </IconButton>
-        </Grid>;
+        </div>;
     }
 }
 

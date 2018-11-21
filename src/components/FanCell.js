@@ -1,27 +1,19 @@
 import React from 'react'
 import {Paper} from '@material-ui/core'
 import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import SettingsApplicationsRounded from '@material-ui/icons/SettingsApplicationsRounded'
 import PropTypes from 'prop-types';
+import {MqttClient} from "mqtt";
 
 const gridCell = {
   height: "100%",
   padding: 2,
-//  backgroundColor: "#eee"
 };
-const settingsButtonStyle = {
-  padding: 0,
-  margin: 0,
-};
-
-
 
 export default class Fan extends React.Component {
 
     static propTypes = {
         classes: PropTypes.object,
-        client: PropTypes.object.isRequired,
+        client: PropTypes.instanceOf(MqttClient).isRequired,
     };
 
     constructor(props) {
@@ -57,11 +49,6 @@ export default class Fan extends React.Component {
                 <Grid container>
                     <Grid item xs style={{padding: 0, margin: 5}}>
                         Fan
-                    </Grid>
-                    <Grid item align="right">
-                        <IconButton className={classes.button} style={settingsButtonStyle} aria-label="Settings">
-                            <SettingsApplicationsRounded/>
-                        </IconButton>
                     </Grid>
                     <Grid container alignItems="center" justify="center">
                         <Grid item style={{fontSize: "1.4em", padding: 0, margin: 0}}>
