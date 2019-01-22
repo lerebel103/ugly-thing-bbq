@@ -28,8 +28,6 @@ export default class TemperatureCell extends React.Component {
         client: PropTypes.instanceOf(MqttClient).isRequired,
         tempKey: PropTypes.string.isRequired,
         title: PropTypes.string,
-        setPoint: PropTypes.number,
-        temperature: PropTypes.number,
     };
 
     constructor(props){
@@ -48,12 +46,18 @@ export default class TemperatureCell extends React.Component {
         client.on('message', (topic, message) => {
             if (topic.endsWith(`temperature/${tempKey}`)) {
                 const obj = JSON.parse(message.toString());
+
                 if (obj) {
                     this.setState({temperature: obj.temp})
                 }
             }
         });
+        console.log("Did mount");
     }
+
+    _onNewSetPoint = (newSetPoint) => {
+        this.setPoint = newSetPoint;
+    };
 
     render() {
         const {title, classes} = this.props;
@@ -69,7 +73,7 @@ export default class TemperatureCell extends React.Component {
                         </div>
                         &nbsp;&nbsp; {title}
                         <Grid container alignItems="center" justify="center">
-                            <SetPoint {...this.props}/>
+                            <SetPoint {...this.props} onNewSetPoint={this._onNewSetPoint}/>
                         </Grid>
                     </Grid>
                 </Grid>

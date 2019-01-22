@@ -58,10 +58,6 @@ class Home extends Component {
         //
         const {client} = this.props;
         client.subscribe(`bbq/${this.props.deviceId}/#`);
-
-        // Great, now ask for the latest state
-        // Request state
-        client.publish(`bbq/${this.props.deviceId}/controller/state/desired`, '{}');
     }
 
     render() {
@@ -83,6 +79,7 @@ class Home extends Component {
                                  deviceId={this.props.deviceId}
                                  tempKey="probe1"
                                  client={client}
+                                 enableAlarm={true}
                         />
                     </Grid>
                     <Grid item container>
@@ -90,6 +87,7 @@ class Home extends Component {
                                  deviceId={this.props.deviceId}
                                  tempKey="probe2"
                                  client={client}
+                                 enableAlarm={true}
                         />
                     </Grid>
                     <Grid item container>

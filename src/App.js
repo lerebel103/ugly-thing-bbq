@@ -21,7 +21,7 @@ class App extends Component {
         // What is our base URL?
         let mqtt = require('mqtt')
         //let mqttHost = window.location.hostname
-        let mqttHost = 'bbqpi.local'
+        let mqttHost = '192.168.150.87'
         const mqttPort = 9001
         const mqttUrl = 'mqtt://' + mqttHost + ':' + mqttPort
 
@@ -37,14 +37,20 @@ class App extends Component {
 
         this._client.on('connect', () => {
             this.setState( {...this.state, ...{connected: true}} );
+            console.log('Connection is up.')
+            // Great, now ask for the latest state
+            // Request state
+            this._client.publish(`bbq/${this.state.deviceId}/controller/state/desired`, '{}');
+
         });
 
         this._client.on('offline', () => {
             this.setState( {...this.state, ...{connected: false}});
+            console.log('*** Connection is down.')
         })
 
         this._client.on('close', () => {
-            console.log('Close!!!')
+            console.log('*** Connection closed.')
         })
 
     }

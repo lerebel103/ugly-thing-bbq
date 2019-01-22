@@ -56,7 +56,7 @@ export default class Fan extends React.Component {
                                 {this.state.rpm} RPM
                                 <Grid>
                                 </Grid>
-                                {this.state.dutyCycle}%
+                                {Math.round(this.state.dutyCycle)}%
                             </Grid>
                         </Grid>
                     </Grid>

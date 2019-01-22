@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import Grid from "@material-ui/core/Grid/Grid";
 import {formatTemperature} from "../utils/temperature";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 import ArrowUpward from '@material-ui/icons/ArrowUpward'
@@ -26,11 +25,13 @@ export default class SetPoint extends Component {
         tempKey: PropTypes.string.isRequired,
         client: PropTypes.instanceOf(MqttClient).isRequired,
         classes: PropTypes.any,
+        onNewSetPoint: PropTypes.func
     };
 
     static defaultProps = {
         minTemp: 50,
         maxTemp: 400,
+        onNewSetPoint: (newSetPoint) => {}
     };
 
     constructor(props) {
@@ -51,7 +52,10 @@ export default class SetPoint extends Component {
             if (topic.endsWith('controller/state/reported')) {
                 const obj = JSON.parse(message.toString());
                 if (obj && tempKey in obj) {
-                    this.setState({setPoint: obj[tempKey].setPoint})
+                    let newTemp = obj[tempKey].setPoint;
+                    this.setState({setPoint: newTemp})
+                    // tell listener
+                    this.props.onNewSetPoint(newTemp);
                 }
             }
         });
